@@ -54,3 +54,5 @@ export const Footer = styled.section`
     }
   }
 `;
+
+export const Form = styled.form``;

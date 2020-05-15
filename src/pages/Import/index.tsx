@@ -7,7 +7,7 @@ import Header from '../../components/Header';
 import FileList from '../../components/FileList';
 import Upload from '../../components/Upload';
 
-import { Container, Title, ImportFileContainer, Footer } from './styles';
+import { Container, Title, ImportFileContainer, Footer, Form } from './styles';
 
 import alert from '../../assets/alert.svg';
 import api from '../../services/api';
@@ -23,19 +23,25 @@ const Import: React.FC = () => {
   const history = useHistory();
 
   async function handleUpload(): Promise<void> {
-    // const data = new FormData();
-
-    // TODO
+    const data = new FormData();
+    if (!uploadedFiles.length) return;
+    data.append('file', uploadedFiles[0].file, uploadedFiles[0].file.name);
 
     try {
-      // await api.post('/transactions/import', data);
+      await api.post('/transactions/import', data);
+      history.push('/');
     } catch (err) {
-      // console.log(err.response.error);
+      console.log(err.response.error);
     }
   }
 
   function submitFile(files: File[]): void {
-    // TODO
+    const fileUploaded = files.map(file => ({
+      file,
+      name: file.name,
+      readableSize: filesize(file.size),
+    }));
+    setUploadedFiles(fileUploaded);
   }
 
   return (
